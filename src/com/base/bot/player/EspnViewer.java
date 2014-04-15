@@ -24,6 +24,7 @@ import org.apache.http.util.EntityUtils;
 
 public class EspnViewer {
 	private CloseableHttpClient httpclient = null;
+	private static String loginUrl = "https://r.espn.go.com/members/util/loginUser", baseUrl = "http://espn.go.com/";
 
 	public EspnViewer(String username, String password) {
 		BasicCookieStore cookieStore = new BasicCookieStore();
@@ -35,13 +36,12 @@ public class EspnViewer {
 
 	private void logintoESPN(String username, String password) {
 
-		HttpPost httpost = new HttpPost(
-				"https://r.espn.go.com/members/util/loginUser");
+		HttpPost httpost = new HttpPost(loginUrl);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("language", "en"));
 		nvps.add(new BasicNameValuePair("affiliateName", "espn"));
-		nvps.add(new BasicNameValuePair("appRedirect", "http://espn.go.com/"));
-		nvps.add(new BasicNameValuePair("parentLocation", "http://espn.go.com/"));
+		nvps.add(new BasicNameValuePair("appRedirect", baseUrl));
+		nvps.add(new BasicNameValuePair("parentLocation", baseUrl));
 		nvps.add(new BasicNameValuePair("registrationFormId", "espn"));
 		nvps.add(new BasicNameValuePair("username", username));
 		nvps.add(new BasicNameValuePair("password", password));
