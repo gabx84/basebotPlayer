@@ -2,6 +2,9 @@ package com.base.bot.model;
 
 public class PlayerResearch {
 
+	public String slotId;
+	public String playerId;
+	
 	public String slot;
 	public String name;
 	public String team;
