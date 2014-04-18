@@ -23,7 +23,7 @@ public class BaseBotPlayer {
 			baseUrl = "http://games.espn.go.com/",
 			rosterUrl = "flb/playertable/prebuilt/manageroster",
 			saveRosterUrl = "flb/pnc/saveRoster";
-	private final static String BENCHID = "16";
+	private final static String BENCHID = "16", UTILID = "12";
 
 	public static void main(String[] args) {
 		EspnViewer espn = new EspnViewer(username, password);
@@ -36,8 +36,7 @@ public class BaseBotPlayer {
 		getSlotsAndRows(playerRoster, slots, doc);
 
 		//clearPlayers(espn, playerRoster, leagueData);
-		List<PlayerSwitch> playerSwitch = sortPlayers(playerRoster, slots);
-		movePlayers(espn, leagueData, playerSwitch);
+		movePlayers(espn, leagueData, pickBestPlayers(playerRoster, slots));
 
 		espn.closeConnection();
 	}
@@ -154,7 +153,7 @@ public class BaseBotPlayer {
 		return returnInt;
 	}
 
-	private static List<PlayerSwitch> sortPlayers(List<PlayerRoster> pResearch,
+	private static List<PlayerSwitch> pickBestPlayers(List<PlayerRoster> pResearch,
 			List<Slot> slots) {
 		List<PlayerSwitch> ps = new ArrayList<PlayerSwitch>();
 		for (Slot s : slots) {
@@ -173,6 +172,23 @@ public class BaseBotPlayer {
 				pResearch.remove(p);
 			}
 		}
+		
+		//util
+		PlayerRoster p = null;
+		for (PlayerRoster pr : pResearch) {
+			if (!pr.position.equals("SP") && !pr.position.equals("RP") && !pr.disabled) {
+				if (p == null) {
+					p = pr;
+				} else if (pr.positionRank < p.positionRank) {
+					p = pr;
+				}
+			}
+		}
+		if (p != null) {
+			ps.add(new PlayerSwitch(p.id, p.slot.id, UTILID));
+			pResearch.remove(p);
+		}
+		
 		return ps;
 	}
 
