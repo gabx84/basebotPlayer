@@ -1,11 +1,15 @@
 package com.base.bot.model;
 
-public class PlayerResearch {
-
-	public String slotId;
-	public String playerId;
+public class PlayerRoster {
 	
-	public String slot;
+	public PlayerRoster(){
+		slot = new Slot();
+	}
+	
+	public String id;
+	
+	public Slot slot;
+	
 	public String name;
 	public String team;
 	public String position;
@@ -15,8 +19,9 @@ public class PlayerResearch {
 	public String pr15;	
 	public String pr30;
 	public String prYear;
-	public String positionRank;
+	public Integer positionRank;
 	public String avgDraftPosition;
 	public String owned;
 	public String ownedChange;
+	public boolean disabled;
 }
